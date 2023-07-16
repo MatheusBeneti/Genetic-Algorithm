@@ -1,6 +1,4 @@
-
-spaceAvailableForObjects = 3.0
-penalty = 1.0
+import random
 
 class Object:
     def __init__(self, name, size, price):
@@ -46,6 +44,8 @@ obj_list.addObject(refrigeradorC)
 obj_list.addObject(notebookB)
 obj_list.addObject(notebookC)
 
+spaceAvailableForObjects = 3.0
+penalty = 1.0
 
 def fitness(combinationOfObjects):
     fitnessValue = 0
@@ -62,6 +62,46 @@ def fitness(combinationOfObjects):
     return fitnessValue
 
 # Exemplo de uso:
-combination = [1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0]
+
+class Population:
+    def __init__(self,numOfObjectsInObjectList):
+        self.__populationList = []
+        self.__numberOfObjects = numOfObjectsInObjectList
+
+    def __generateIndividual(self):
+        individual = []
+        for i in range(self.__numberOfObjects):
+            randomGene = random.randint(0, 1)
+            individual.append(randomGene)
+        return individual
+    
+    def generateInitialPopulation(self):
+        for i in range(6):
+            individualGenerated = self.__generateIndividual()
+            self.__populationList.append(individualGenerated)
+    
+    def evaluatePopulation(self):
+        for i in range(len(self.__populationList)):
+            fitnessValue = fitness(self.__populationList[i])
+            self.__populationList[i] = (self.__populationList[i], fitnessValue)
+
+
+        
+
+    def getPopulationList(self):
+        return self.__populationList
+
+numOfObjectsInObjectList = 14
+
+population = Population(numOfObjectsInObjectList)
+population.generateInitialPopulation()
+
+population.getPopulationList()
+population.evaluatePopulation()
+
+print(population.getPopulationList())
+
+combination = [1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1]
 result = fitness(combination)
 print(result)
+
