@@ -1,3 +1,7 @@
+
+spaceAvailableForObjects = 3.0
+penalty = 1.0
+
 class Object:
     def __init__(self, name, size, price):
         self.name = name
@@ -44,10 +48,8 @@ obj_list.addObject(notebookC)
 
 
 def fitness(combinationOfObjects):
-    spaceAvailableForObjects = 3.0
     fitnessValue = 0
     total_size = 0
-    penalty = 1.0
 
     for i in range(len(combinationOfObjects)):
         if combinationOfObjects[i] == 1:
