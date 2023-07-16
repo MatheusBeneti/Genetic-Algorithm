@@ -64,8 +64,8 @@ def fitness(combinationOfObjects):
 # Exemplo de uso:
 
 class Population:
-    def __init__(self,numOfObjectsInObjectList):
-        self.__populationList = []
+    def __init__(self,numOfObjectsInObjectList, numberOfIndividualsPerPopulation):
+        self.__individualList = []
         self.__numberOfObjects = numOfObjectsInObjectList
 
     def __generateIndividual(self):
@@ -76,27 +76,23 @@ class Population:
         return individual
     
     def generateInitialPopulation(self):
-        for i in range(6):
+        for i in range(numberOfIndividualsPerPopulation):
             individualGenerated = self.__generateIndividual()
-            self.__populationList.append(individualGenerated)
+            self.__individualList.append(individualGenerated)
     
     def evaluatePopulation(self):
-        for i in range(len(self.__populationList)):
-            fitnessValue = fitness(self.__populationList[i])
-            self.__populationList[i] = (self.__populationList[i], fitnessValue)
-
-
-        
+        for i in range(len(self.__individualList)):
+            fitnessValue = fitness(self.__individualList[i])
+            self.__individualList[i] = (self.__individualList[i], fitnessValue)
 
     def getPopulationList(self):
-        return self.__populationList
+        return self.__individualList
 
 numOfObjectsInObjectList = 14
+numberOfIndividualsPerPopulation = 6
 
-population = Population(numOfObjectsInObjectList)
+population = Population(numOfObjectsInObjectList, numberOfIndividualsPerPopulation)
 population.generateInitialPopulation()
-
-population.getPopulationList()
 population.evaluatePopulation()
 
 print(population.getPopulationList())
