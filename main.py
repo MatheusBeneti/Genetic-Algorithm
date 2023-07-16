@@ -1,40 +1,65 @@
-
-#----------------------------------------------------------------
-# primeiro criar a estrutura para representar as pessoas ou cidades 
-# A lista ira conter as cidade e a sigla do aeroporto
-flightsDataPath = 'flights.txt'
-people = ['Paris','Berlin']
-flights = []
-
-
-
-class Person:
-    def __init__(self, name, cityOfOrigin, destinationCity):
+class Object:
+    def __init__(self, name, size, price):
         self.name = name
-        self.cityOfOrigin = cityOfOrigin
-        self.destinationCity = destinationCity
-        self.availableFlights = []  
-        
+        self.size = size
+        self.price = price
 
-    def createBetterPackage():
-        print("NotImplemented")
+RefrigeratorA = Object("Refrigerator A", 0.751, 999.90)
+celular = Object("Celular", 0.00000899, 2199.12)
+tv55 = Object("TV 55", 0.400, 4346.99)
+tv50 = Object("TV 50", 0.290, 3999.90)
+tv42 = Object("TV 42", 0.200, 2999.90)
+notebookA = Object("Notebook A", 0.00350, 2499.90)
+ventilador = Object("Ventilador", 0.496, 199.90)
+microodasA = Object("Microondas A", 0.0424, 308.66)
+microodasB = Object("Microondas A", 0.0424, 308.66)
+microodasC = Object("Microondas C", 0.0319, 299.29)
+refrigeradorB = Object("Refrigerador B", 0.635, 849.00)
+refrigeradorC = Object("Refrigerador C", 0.870, 1199.89)
+notebookB = Object("Notebook B", 0.498, 1999.90)
+notebookC = Object("Notebook C", 0.527, 3999.00)
 
-    def searchAvailableFlights(self, flightsDataPath):
-        with open(flightsDataPath, 'r') as file:
-            for line in file:
-                first_word = line.split(',')[0].strip()
-                second_word = line.split(',')[1].strip()
-                if first_word == self.cityOfOrigin and second_word == self.destinationCity:
-                    self.availableFlights.append(line)
-                
-                if first_word == self.destinationCity and second_word == self.cityOfOrigin:
-                    self.availableFlights.append(line)
-                    
-    def printAvailableFlights(self):
-        print(self.availableFlights)
+class ObjectList:
+    def __init__(self):
+        self.list = []
+    
+    def addObject(self, obj):
+        self.list.append(obj)
+
+obj_list = ObjectList()
+obj_list.addObject(RefrigeratorA)
+obj_list.addObject(celular)
+obj_list.addObject(tv55)
+obj_list.addObject(tv50)
+obj_list.addObject(tv42)
+obj_list.addObject(notebookA)
+obj_list.addObject(ventilador)
+obj_list.addObject(microodasA)
+obj_list.addObject(microodasB)
+obj_list.addObject(microodasC)
+obj_list.addObject(refrigeradorB)
+obj_list.addObject(refrigeradorC)
+obj_list.addObject(notebookB)
+obj_list.addObject(notebookC)
 
 
-# Primeiro voo de Paris para Roma e o primeiro voo do dia de Roma para Paris 
-firstPerson = Person('alice', 'Berlim', 'Roma')
-firstPerson.searchAvailableFlights(flightsDataPath)
-firstPerson.printAvailableFlights()
+def fitness(combinationOfObjects):
+    spaceAvailableForObjects = 3.0
+    fitnessValue = 0
+    total_size = 0
+    penalty = 1.0
+
+    for i in range(len(combinationOfObjects)):
+        if combinationOfObjects[i] == 1:
+            fitnessValue += obj_list.list[i].price
+            total_size += obj_list.list[i].size
+
+    if total_size > spaceAvailableForObjects:
+        fitnessValue -= penalty * (total_size - spaceAvailableForObjects)
+
+    return fitnessValue
+
+# Exemplo de uso:
+combination = [1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0]
+result = fitness(combination)
+print(result)
