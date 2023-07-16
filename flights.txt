@@ -1,13 +1,3 @@
-Roma, Paris, 200
-Roma, Paris, 180
-Roma, Paris, 220
-Roma, Paris, 190
-Roma, Paris, 210
-Roma, Berlim, 250
-Roma, Berlim, 230
-Roma, Berlim, 220
-Roma, Berlim, 240
-Roma, Berlim, 210
 Paris, Roma, 220
 Paris, Roma, 240
 Paris, Roma, 230
@@ -18,3 +8,13 @@ Berlim, Roma, 280
 Berlim, Roma, 270
 Berlim, Roma, 250
 Berlim, Roma, 290
+Roma, Paris, 200
+Roma, Paris, 180
+Roma, Paris, 220
+Roma, Paris, 190
+Roma, Paris, 210
+Roma, Berlim, 250
+Roma, Berlim, 230
+Roma, Berlim, 220
+Roma, Berlim, 240
+Roma, Berlim, 210
