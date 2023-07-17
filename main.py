@@ -85,19 +85,40 @@ class Population:
             fitnessValue = fitness(self.__individualList[i])
             self.__individualList[i] = (self.__individualList[i], fitnessValue)
 
-    def getPopulationList(self):
+    def getPopulation(self):
         return self.__individualList
+    
+class Crosshover:
+    def __init__(self, population):
+        self.__numOfParents = int(len(population) / 2)
+        self.__population = population
+
+    def executeCrosshover(self):
+        parents = self.__getBetterParents()
+        print("\n\n\n\n",parents)
+        #self.__begetChildren(parents)
+
+    def __getBetterParents(self):
+        betterIndividual = sorted(self.__population, key=lambda x: x[1], reverse=True)
+        return betterIndividual[:self.__numOfParents]
+
+    def __begetChildren(self, parents):
+        NotImplemented
+
+
+
 
 numOfObjectsInObjectList = 14
-numberOfIndividualsPerPopulation = 6
+numberOfIndividualsPerPopulation = 4
 
 population = Population(numOfObjectsInObjectList, numberOfIndividualsPerPopulation)
 population.generateInitialPopulation()
 population.evaluatePopulation()
+crosshover = Crosshover(population.getPopulation())
+crosshover.executeCrosshover()
+print("\n\n\n\n",population.getPopulation())
 
-print(population.getPopulationList())
-
-combination = [1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1]
-result = fitness(combination)
-print(result)
+#combination = [1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1]
+#result = fitness(combination)
+#print(result)
 
