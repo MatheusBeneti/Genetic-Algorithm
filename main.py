@@ -120,27 +120,40 @@ class Crossover:
     def __init__(self, population):
         self.__numOfParents = int(len(population) / 2)
         self.__population = population
+        self.__newGeneration = []
 
     def executeCrossover(self):
         parents = self.__getBetterParents()
-        print("\n\nPais: ", parents, "\nTamanho: ", len(parents), "\n")
         offspring = self.__begetChildren(parents)
+        self.__newGeneration = offspring + parents
 
     def __getBetterParents(self):
         betterIndividual = sorted(self.__population, key=lambda x: x["fitnessValue"], reverse=True)
         return betterIndividual[:self.__numOfParents]
 
-    #  self.__individualList.append({"individual": individualGenerated, "fitnessValue": None})
+
     def __begetChildren(self, parents):
+        couples = self.__formCouples(parents)
+        sizeOfIndividual = len(parents[0]["individual"])  
 
-        self.__formCouples(parents)
+        offspring = []
 
-        #filho1.extend(pai[:ponto_corte])  # Primeira parte do pai para o filho 1
-        #filho1.extend(mae[ponto_corte:])  # Segunda parte da mãe para o filho 1
+        for couple in couples:
+            sonOne = []
+            sonTwo = []
 
-        #filho2.extend(mae[:ponto_corte])  # Primeira parte da mãe para o filho 2
-        #filho2.extend(pai[ponto_corte:])  # Segunda parte do pai para o filho 2
+            ponto_corte = random.randint(0, sizeOfIndividual)
 
+            sonOne.extend(couple[0]["individual"][:ponto_corte])  # Primeira parte do pai para o filho 1
+            sonOne.extend(couple[1]["individual"][ponto_corte:])  # Segunda parte da mãe para o filho 1
+
+            sonTwo.extend(couple[1]["individual"][:ponto_corte])  # Primeira parte da mãe para o filho 2
+            sonTwo.extend(couple[0]["individual"][ponto_corte:])  # Segunda parte do pai para o filho 2
+
+            offspring.append({"individual": sonOne, "fitnessValue": None})
+            offspring.append({"individual": sonTwo, "fitnessValue": None})
+
+        return offspring
         
 
     def __formCouples(self, parentsList):
@@ -155,46 +168,34 @@ class Crossover:
             fatherTwo = parents[idFatherTwo]
             parents.pop(idFatherTwo)
 
-        Couples.append((fatherOne, fatherTwo))
-
-        for i in range(len(Couples)):
-            print("Casais",[i],":",Couples[i])
-        print("\nPai restante: ",parents, "\n")
+            Couples.append((fatherOne, fatherTwo))
 
         # Estava me perguntando como proceder se a lista de pais for impar, como formar casais? sempre sobra 1, o que fazer com esse 1
         # mudar as classes de arquivo
 
         return Couples
-
-    def __createNewGeneration(self, offspring, parents):
-        fatherOne = parents[0]["individual"]
-        fatherTwo = parents[1]["individual"]
-        newGeneration = [
-            {"individual": offspring[0], "fitnessValue": None},
-            {"individual": offspring[1], "fitnessValue": None},
-            {"individual": fatherOne, "fitnessValue": None},
-            {"individual": fatherTwo, "fitnessValue": None}
-        ]
-        return newGeneration
+    
+    def __justList(offspring, parents):
+        NotImplemented
 
     def getNewGeneration(self):
         return self.__newGeneration
 
 numOfObjectsInObjectList = 14
-numberOfIndividualsPerPopulation = 10
+numberOfIndividualsPerPopulation = 24
 mutationRate = 0.6
 
 population = Population(numOfObjectsInObjectList, numberOfIndividualsPerPopulation)
 population.generateInitialPopulation()
 population.evaluatePopulation()
-for i in range(1):
+for i in range(10000):
     crossover = Crossover(population.getPopulation())
     crossover.executeCrossover()
-    #population.setNewPopulation(crossover.getNewGeneration())
+    population.setNewPopulation(crossover.getNewGeneration())
     #population.mutarPopulation(mutationRate)
-    #population.evaluatePopulation()
+    population.evaluatePopulation()
     #population.saveBetterIndividual()
 
 
 population.printPopulation()
-print("\n\nMelhor Individuo: ", population.getBetterIndividual())
+#print("\n\nMelhor Individuo: ", population.getBetterIndividual())
