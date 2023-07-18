@@ -96,14 +96,27 @@ class Crosshover:
     def executeCrosshover(self):
         parents = self.__getBetterParents()
         print("\n\n\n\n",parents)
-        #self.__begetChildren(parents)
+        self.__begetChildren(parents)
 
     def __getBetterParents(self):
         betterIndividual = sorted(self.__population, key=lambda x: x[1], reverse=True)
         return betterIndividual[:self.__numOfParents]
 
     def __begetChildren(self, parents):
-        NotImplemented
+        pai = parents[0][0]
+        mae = parents[1][0]
+        filho1 = []
+        filho2 = []
+
+        ponto_corte = random.randint(1, len(pai) - 1)  # Seleciona um ponto de corte aleatório
+
+        filho1.extend(pai[:ponto_corte])  # Primeira parte do pai para o filho 1
+        filho1.extend(mae[ponto_corte:])  # Segunda parte da mãe para o filho 1
+
+        filho2.extend(mae[:ponto_corte])  # Primeira parte da mãe para o filho 2
+        filho2.extend(pai[ponto_corte:])  # Segunda parte do pai para o filho 2
+
+        print("\n\n\n\n", filho1, filho2)
 
 
 
