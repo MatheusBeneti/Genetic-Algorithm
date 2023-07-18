@@ -87,6 +87,12 @@ class Population:
 
     def getPopulation(self):
         return self.__individualList
+    
+    def printPopulation(self):
+        numberOfIndividual = len(self.__individualList)
+        for i in range(numberOfIndividual):
+            print(self.__individualList[i])
+        print("\nQuantidade de Indivíduos: ", numberOfIndividual)
 
     def setNewPopulation(self, newGeneration):
         self.__individualList = newGeneration
@@ -117,28 +123,47 @@ class Crossover:
 
     def executeCrossover(self):
         parents = self.__getBetterParents()
+        print("\n\nPais: ", parents, "\nTamanho: ", len(parents), "\n")
         offspring = self.__begetChildren(parents)
-        self.__newGeneration = self.__createNewGeneration(offspring, parents)
 
     def __getBetterParents(self):
         betterIndividual = sorted(self.__population, key=lambda x: x["fitnessValue"], reverse=True)
         return betterIndividual[:self.__numOfParents]
 
+    #  self.__individualList.append({"individual": individualGenerated, "fitnessValue": None})
     def __begetChildren(self, parents):
-        pai = parents[0]["individual"]
-        mae = parents[1]["individual"]
-        filho1 = []
-        filho2 = []
 
-        ponto_corte = random.randint(1, len(pai) - 1)  # Seleciona um ponto de corte aleatório
+        self.__formCouples(parents)
 
-        filho1.extend(pai[:ponto_corte])  # Primeira parte do pai para o filho 1
-        filho1.extend(mae[ponto_corte:])  # Segunda parte da mãe para o filho 1
+        #filho1.extend(pai[:ponto_corte])  # Primeira parte do pai para o filho 1
+        #filho1.extend(mae[ponto_corte:])  # Segunda parte da mãe para o filho 1
 
-        filho2.extend(mae[:ponto_corte])  # Primeira parte da mãe para o filho 2
-        filho2.extend(pai[ponto_corte:])  # Segunda parte do pai para o filho 2
+        #filho2.extend(mae[:ponto_corte])  # Primeira parte da mãe para o filho 2
+        #filho2.extend(pai[ponto_corte:])  # Segunda parte do pai para o filho 2
 
-        return filho1, filho2
+        
+
+    def __formCouples(self, parentsList):
+        parents = parentsList[:]
+        Couples = []
+        while len(parents) >= 2:
+            idFatherOne = random.randint(0, len(parents)-1)
+            fatherOne = parents[idFatherOne]
+            parents.pop(idFatherOne)
+
+            idFatherTwo = random.randint(0, len(parents)-1)
+            fatherTwo = parents[idFatherTwo]
+            parents.pop(idFatherTwo)
+
+        Couples.append((fatherOne, fatherTwo))
+
+        for i in range(len(Couples)):
+            print("Casais",[i],":",Couples[i])
+        print("\nPai restante: ",parents, "\n")
+
+        # Estava me perguntando como proceder se a lista de pais for impar, como formar casais? sempre sobra 1, o que fazer com esse 1
+
+        return Couples
 
     def __createNewGeneration(self, offspring, parents):
         fatherOne = parents[0]["individual"]
@@ -155,20 +180,20 @@ class Crossover:
         return self.__newGeneration
 
 numOfObjectsInObjectList = 14
-numberOfIndividualsPerPopulation = 4
-mutationRate = 0.5
+numberOfIndividualsPerPopulation = 10
+mutationRate = 0.6
 
 population = Population(numOfObjectsInObjectList, numberOfIndividualsPerPopulation)
 population.generateInitialPopulation()
 population.evaluatePopulation()
-for i in range(5000):
+for i in range(1):
     crossover = Crossover(population.getPopulation())
     crossover.executeCrossover()
-    population.setNewPopulation(crossover.getNewGeneration())
-    population.mutarPopulation(mutationRate)
-    population.evaluatePopulation()
-    population.saveBetterIndividual()
+    #population.setNewPopulation(crossover.getNewGeneration())
+    #population.mutarPopulation(mutationRate)
+    #population.evaluatePopulation()
+    #population.saveBetterIndividual()
 
 
-print("\n\nGeração Nova: ", population.getPopulation())
+population.printPopulation()
 print("\n\nMelhor Individuo: ", population.getBetterIndividual())
