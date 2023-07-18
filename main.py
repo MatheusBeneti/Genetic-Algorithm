@@ -49,7 +49,7 @@ penalty = 2.0
 
 def fitness(combinationOfObjects):
     fitnessValue = 0
-    total_size = 0
+    total_size = 3.0
 
     for i in range(len(combinationOfObjects)):
         if combinationOfObjects[i] == 1:
