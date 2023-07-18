@@ -14,7 +14,7 @@ tv42 = Object("TV 42", 0.200, 2999.90)
 notebookA = Object("Notebook A", 0.00350, 2499.90)
 ventilador = Object("Ventilador", 0.496, 199.90)
 microodasA = Object("Microondas A", 0.0424, 308.66)
-microodasB = Object("Microondas A", 0.0424, 308.66)
+microodasB = Object("Microondas B", 0.0424, 308.66)
 microodasC = Object("Microondas C", 0.0319, 299.29)
 refrigeradorB = Object("Refrigerador B", 0.635, 849.00)
 refrigeradorC = Object("Refrigerador C", 0.870, 1199.89)
@@ -61,10 +61,8 @@ def fitness(combinationOfObjects):
 
     return fitnessValue
 
-# Exemplo de uso:
-
 class Population:
-    def __init__(self,numOfObjectsInObjectList, numberOfIndividualsPerPopulation):
+    def __init__(self, numOfObjectsInObjectList, numberOfIndividualsPerPopulation):
         self.__individualList = []
         self.__numberOfObjects = numOfObjectsInObjectList
 
@@ -74,37 +72,41 @@ class Population:
             randomGene = random.randint(0, 1)
             individual.append(randomGene)
         return individual
-    
+
     def generateInitialPopulation(self):
         for i in range(numberOfIndividualsPerPopulation):
             individualGenerated = self.__generateIndividual()
-            self.__individualList.append(individualGenerated)
-    
+            self.__individualList.append({"individual": individualGenerated, "fitnessValue": None})
+
     def evaluatePopulation(self):
         for i in range(len(self.__individualList)):
-            fitnessValue = fitness(self.__individualList[i])
-            self.__individualList[i] = (self.__individualList[i], fitnessValue)
+            individual = self.__individualList[i]["individual"]
+            fitnessValue = fitness(individual)
+            self.__individualList[i]["fitnessValue"] = fitnessValue
 
     def getPopulation(self):
         return self.__individualList
-    
-class Crosshover:
+
+    def setNewPopulation(self, newGeneration):
+        self.__individualList = newGeneration
+
+class Crossover:
     def __init__(self, population):
         self.__numOfParents = int(len(population) / 2)
         self.__population = population
 
-    def executeCrosshover(self):
+    def executeCrossover(self):
         parents = self.__getBetterParents()
-        print("\n\n\n\n",parents)
-        self.__begetChildren(parents)
+        offspring = self.__begetChildren(parents)
+        self.__newGeneration = self.__createNewGeneration(offspring, parents)
 
     def __getBetterParents(self):
-        betterIndividual = sorted(self.__population, key=lambda x: x[1], reverse=True)
+        betterIndividual = sorted(self.__population, key=lambda x: x["fitnessValue"], reverse=True)
         return betterIndividual[:self.__numOfParents]
 
     def __begetChildren(self, parents):
-        pai = parents[0][0]
-        mae = parents[1][0]
+        pai = parents[0]["individual"]
+        mae = parents[1]["individual"]
         filho1 = []
         filho2 = []
 
@@ -116,10 +118,21 @@ class Crosshover:
         filho2.extend(mae[:ponto_corte])  # Primeira parte da mãe para o filho 2
         filho2.extend(pai[ponto_corte:])  # Segunda parte do pai para o filho 2
 
-        print("\n\n\n\n", filho1, filho2)
+        return filho1, filho2
 
+    def __createNewGeneration(self, offspring, parents):
+        fatherOne = parents[0]["individual"]
+        fatherTwo = parents[1]["individual"]
+        newGeneration = [
+            {"individual": offspring[0], "fitnessValue": None},
+            {"individual": offspring[1], "fitnessValue": None},
+            {"individual": fatherOne, "fitnessValue": None},
+            {"individual": fatherTwo, "fitnessValue": None}
+        ]
+        return newGeneration
 
-
+    def getNewGeneration(self):
+        return self.__newGeneration
 
 numOfObjectsInObjectList = 14
 numberOfIndividualsPerPopulation = 4
@@ -127,11 +140,9 @@ numberOfIndividualsPerPopulation = 4
 population = Population(numOfObjectsInObjectList, numberOfIndividualsPerPopulation)
 population.generateInitialPopulation()
 population.evaluatePopulation()
-crosshover = Crosshover(population.getPopulation())
-crosshover.executeCrosshover()
-print("\n\n\n\n",population.getPopulation())
-
-#combination = [1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1]
-#result = fitness(combination)
-#print(result)
-
+crossover = Crossover(population.getPopulation())
+crossover.executeCrossover()
+print("\n\nGeração Antiga: ", population.getPopulation())
+population.setNewPopulation(crossover.getNewGeneration())
+population.evaluatePopulation()
+print("\n\nGeração Nova: ", population.getPopulation())
