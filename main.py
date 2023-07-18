@@ -162,6 +162,7 @@ class Crossover:
         print("\nPai restante: ",parents, "\n")
 
         # Estava me perguntando como proceder se a lista de pais for impar, como formar casais? sempre sobra 1, o que fazer com esse 1
+        # mudar as classes de arquivo
 
         return Couples
 
