@@ -45,7 +45,7 @@ obj_list.addObject(notebookB)
 obj_list.addObject(notebookC)
 
 spaceAvailableForObjects = 3.0
-penalty = 1.0
+penalty = 2.0
 
 def fitness(combinationOfObjects):
     fitnessValue = 0
@@ -188,11 +188,11 @@ mutationRate = 0.6
 population = Population(numOfObjectsInObjectList, numberOfIndividualsPerPopulation)
 population.generateInitialPopulation()
 population.evaluatePopulation()
-for i in range(10000):
+for i in range(1000):
     crossover = Crossover(population.getPopulation())
     crossover.executeCrossover()
     population.setNewPopulation(crossover.getNewGeneration())
-    #population.mutarPopulation(mutationRate)
+    #population.mutarPopulation(mutationRate) erro na mutação
     population.evaluatePopulation()
     #population.saveBetterIndividual()
 
