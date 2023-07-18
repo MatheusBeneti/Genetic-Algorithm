@@ -49,7 +49,7 @@ penalty = 2.0
 
 def fitness(combinationOfObjects):
     fitnessValue = 0
-    total_size = 3.0
+    total_size = 0
 
     for i in range(len(combinationOfObjects)):
         if combinationOfObjects[i] == 1:
@@ -57,8 +57,8 @@ def fitness(combinationOfObjects):
             total_size += obj_list.list[i].size
 
     if total_size > spaceAvailableForObjects:
-        fitnessValue -= penalty * (total_size - spaceAvailableForObjects)
-
+        #fitnessValue -= penalty * (total_size - spaceAvailableForObjects)
+        fitnessValue = 0
     return fitnessValue
 
 class Population:
@@ -188,14 +188,14 @@ mutationRate = 0.6
 population = Population(numOfObjectsInObjectList, numberOfIndividualsPerPopulation)
 population.generateInitialPopulation()
 population.evaluatePopulation()
-for i in range(1000):
+for i in range(10000):
     crossover = Crossover(population.getPopulation())
     crossover.executeCrossover()
     population.setNewPopulation(crossover.getNewGeneration())
     #population.mutarPopulation(mutationRate) erro na mutação
     population.evaluatePopulation()
-    #population.saveBetterIndividual()
+    population.saveBetterIndividual()
 
 
 population.printPopulation()
-#print("\n\nMelhor Individuo: ", population.getBetterIndividual())
+print("\n\nMelhor Individuo: ", population.getBetterIndividual())
