@@ -65,6 +65,7 @@ class Population:
     def __init__(self, numOfObjectsInObjectList, numberOfIndividualsPerPopulation):
         self.__individualList = []
         self.__numberOfObjects = numOfObjectsInObjectList
+        self.__betterIndividual = None
 
     def __generateIndividual(self):
         individual = []
@@ -89,6 +90,25 @@ class Population:
 
     def setNewPopulation(self, newGeneration):
         self.__individualList = newGeneration
+
+    def mutarPopulation(self, mutationRate):
+        for individuo in self.__individualList:
+            if random.random() <= mutationRate:
+                self.__mutarIndividuo(individuo)
+
+    def __mutarIndividuo(self, individuo):
+        gene_index = random.randint(0, len(individuo) - 1)
+        novo_valor = random.randint(0, 1)
+        individuo[gene_index] = novo_valor
+
+    def saveBetterIndividual(self):
+        betterIndividual = sorted(self.__individualList, key=lambda x: x["fitnessValue"], reverse=True)
+        if self.__betterIndividual is None or betterIndividual[0]["fitnessValue"] > self.__betterIndividual["fitnessValue"]:
+            self.__betterIndividual = betterIndividual[0]
+
+    
+    def getBetterIndividual(self):
+        return self.__betterIndividual
 
 class Crossover:
     def __init__(self, population):
@@ -136,13 +156,19 @@ class Crossover:
 
 numOfObjectsInObjectList = 14
 numberOfIndividualsPerPopulation = 4
+mutationRate = 0.5
 
 population = Population(numOfObjectsInObjectList, numberOfIndividualsPerPopulation)
 population.generateInitialPopulation()
 population.evaluatePopulation()
-crossover = Crossover(population.getPopulation())
-crossover.executeCrossover()
-print("\n\nGeração Antiga: ", population.getPopulation())
-population.setNewPopulation(crossover.getNewGeneration())
-population.evaluatePopulation()
+for i in range(5000):
+    crossover = Crossover(population.getPopulation())
+    crossover.executeCrossover()
+    population.setNewPopulation(crossover.getNewGeneration())
+    population.mutarPopulation(mutationRate)
+    population.evaluatePopulation()
+    population.saveBetterIndividual()
+
+
 print("\n\nGeração Nova: ", population.getPopulation())
+print("\n\nMelhor Individuo: ", population.getBetterIndividual())
