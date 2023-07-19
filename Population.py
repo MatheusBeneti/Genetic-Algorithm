@@ -52,12 +52,12 @@ class Population:
     def setNewPopulation(self, newGeneration):
         self.__individualList = newGeneration
 
-    def mutarPopulation(self, mutationRate):
+    def mutatePopulation(self, mutationRate):
         for individuo in self.__individualList:
             if random.random() <= mutationRate:
-                self.__mutarIndividuo(individuo)
+                self.__mutateIndividuo(individuo)
 
-    def __mutarIndividuo(self, individuo):
+    def __mutateIndividuo(self, individuo):
         gene_index = random.randint(0, len(individuo["individual"]) - 1)
         novo_valor = random.randint(0, 1)
         individuo["individual"][gene_index] = novo_valor

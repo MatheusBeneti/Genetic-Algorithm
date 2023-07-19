@@ -49,7 +49,7 @@ for i in range(NumberOfGenerations):
     crossover = Crossover(population.getPopulation())
     crossover.executeCrossover()
     population.setNewPopulation(crossover.getNewGeneration())
-    population.mutarPopulation(mutationRate) 
+    population.mutatePopulation(mutationRate) 
     population.evaluatePopulation()
     population.saveBetterIndividual()
 
