@@ -98,3 +98,9 @@ class Population:
     
     def getBetterIndividual(self):
         return self.__betterIndividual
+    
+    def printBetterCombination(self):
+        for i, gene in enumerate(self.__betterIndividual["individual"]):
+            if gene == 1:
+                print(self.__obj_list.list[i].name)
+        print("\n----------")

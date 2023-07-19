@@ -53,5 +53,8 @@ for i in range(NumberOfGenerations):
     population.evaluatePopulation()
     population.saveBetterIndividual()
 
+print("\nÚltima Geração:\n")
 population.printPopulation()
-print("\nMelhor Indivíduo: ", population.getBetterIndividual(),"\n\n\n")
+print("\nMelhor Indivíduo: ", population.getBetterIndividual(),"\n")
+print("\nLogo a possível melhor combinação de objetos é: \n")
+population.printBetterCombination()
