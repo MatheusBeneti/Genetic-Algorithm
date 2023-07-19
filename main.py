@@ -57,7 +57,6 @@ def fitness(combinationOfObjects):
             total_size += obj_list.list[i].size
 
     if total_size > spaceAvailableForObjects:
-        #fitnessValue -= penalty * (total_size - spaceAvailableForObjects)
         fitnessValue = 0
     return fitnessValue
 
@@ -103,14 +102,43 @@ class Population:
                 self.__mutarIndividuo(individuo)
 
     def __mutarIndividuo(self, individuo):
-        gene_index = random.randint(0, len(individuo) - 1)
+        gene_index = random.randint(0, len(individuo["individual"]) - 1)
         novo_valor = random.randint(0, 1)
-        individuo[gene_index] = novo_valor
+        individuo["individual"][gene_index] = novo_valor
 
     def saveBetterIndividual(self):
-        betterIndividual = sorted(self.__individualList, key=lambda x: x["fitnessValue"], reverse=True)
-        if self.__betterIndividual is None or betterIndividual[0]["fitnessValue"] > self.__betterIndividual["fitnessValue"]:
-            self.__betterIndividual = betterIndividual[0]
+        best_individuals = sorted(self.__individualList, key=lambda x: x["fitnessValue"], reverse=True)
+        found_better_individual = False
+
+        for i in range(len(best_individuals)):
+            nominee_for_best_individual = best_individuals[i]
+            nominee_size = self._Population__getTheTotalweightOfTheIndividual(nominee_for_best_individual)
+
+            if (self.__betterIndividual is None or
+                (best_individuals[i]["fitnessValue"] > self.__betterIndividual["fitnessValue"] and
+                nominee_size <= spaceAvailableForObjects)):
+
+                self.__betterIndividual = nominee_for_best_individual
+
+                if nominee_size <= spaceAvailableForObjects:
+                    self.__betterIndividual["size"] = nominee_size
+                    found_better_individual = True
+                    break
+
+            elif best_individuals[i]["fitnessValue"] > self.__betterIndividual["fitnessValue"]:
+                break
+
+        if found_better_individual:
+            return
+
+
+
+    def __getTheTotalweightOfTheIndividual(self, individual):
+        totalSize = 0
+        for i in range(len(individual["individual"])):
+            if individual["individual"][i] == 1:
+                totalSize += obj_list.list[i].size
+        return totalSize
 
     
     def getBetterIndividual(self):
@@ -174,15 +202,12 @@ class Crossover:
         # mudar as classes de arquivo
 
         return Couples
-    
-    def __justList(offspring, parents):
-        NotImplemented
 
     def getNewGeneration(self):
         return self.__newGeneration
 
 numOfObjectsInObjectList = 14
-numberOfIndividualsPerPopulation = 24
+numberOfIndividualsPerPopulation = 48
 mutationRate = 0.6
 
 population = Population(numOfObjectsInObjectList, numberOfIndividualsPerPopulation)
@@ -192,10 +217,10 @@ for i in range(10000):
     crossover = Crossover(population.getPopulation())
     crossover.executeCrossover()
     population.setNewPopulation(crossover.getNewGeneration())
-    #population.mutarPopulation(mutationRate) erro na mutação
+    population.mutarPopulation(mutationRate) 
     population.evaluatePopulation()
     population.saveBetterIndividual()
 
 
 population.printPopulation()
-print("\n\nMelhor Individuo: ", population.getBetterIndividual())
+print("\nMelhor Individuo: ", population.getBetterIndividual(),"\n\n\n")
