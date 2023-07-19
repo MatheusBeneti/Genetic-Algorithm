@@ -43,6 +43,7 @@ class Crossover:
     def __formCouples(self, parentsList):
         parents = parentsList[:]
         Couples = []
+        
         while len(parents) >= 2:
             idFatherOne = random.randint(0, len(parents)-1)
             fatherOne = parents[idFatherOne]
@@ -53,9 +54,6 @@ class Crossover:
             parents.pop(idFatherTwo)
 
             Couples.append((fatherOne, fatherTwo))
-
-        # Estava me perguntando como proceder se a lista de pais for impar, como formar casais? sempre sobra 1, o que fazer com esse 1
-        # mudar as classes de arquivo
 
         return Couples
 

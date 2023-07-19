@@ -35,25 +35,10 @@ obj_list.addObject(notebookB)
 obj_list.addObject(notebookC)
 
 
-def fitness(combinationOfObjects):
-    fitnessValue = 0
-    total_size = 0
-
-    for i in range(len(combinationOfObjects)):
-        if combinationOfObjects[i] == 1:
-            fitnessValue += obj_list.list[i].price
-            total_size += obj_list.list[i].size
-
-    if total_size > spaceAvailableForObjects:
-        fitnessValue = 0
-    return fitnessValue
-
-
 spaceAvailableForObjects = 3.0
 numberOfIndividualsPerPopulation = 48
 mutationRate = 0.1
 NumberOfGenerations = 1000
-
 
 population = Population(numberOfIndividualsPerPopulation, spaceAvailableForObjects, obj_list)
 

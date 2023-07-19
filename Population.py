@@ -1,6 +1,5 @@
 import random
 
-
 class Population:
     def __init__(self, numberOfIndividualsPerPopulation, spaceAvailableForObjects, objectList):
         self.__individualList = []
@@ -28,12 +27,12 @@ class Population:
             fitnessValue = self.__fitness(individual)
             self.__individualList[i]["fitnessValue"] = fitnessValue
 
-    def __fitness(self, combinationOfObjects):
+    def __fitness(self, individual):
         fitnessValue = 0
         total_size = 0
 
-        for i in range(len(combinationOfObjects)):
-            if combinationOfObjects[i] == 1:
+        for i in range(len(individual)):
+            if individual[i] == 1:
                 fitnessValue += self.__obj_list.list[i].price
                 total_size += self.__obj_list.list[i].size
 
@@ -69,7 +68,7 @@ class Population:
 
         for i in range(len(best_individuals)):
             nominee_for_best_individual = best_individuals[i]
-            nominee_size = self._Population__getTheTotalweightOfTheIndividual(nominee_for_best_individual)
+            nominee_size = self.__getTheTotalweightOfTheIndividual(nominee_for_best_individual)
 
             if (self.__betterIndividual is None or
                 (best_individuals[i]["fitnessValue"] > self.__betterIndividual["fitnessValue"] and
