@@ -1,7 +1,6 @@
 
 ### Versão em Português:
 
-```markdown
 # Algoritmo Genético para o Problema da Mochila
 
 Este repositório contém uma implementação de um Algoritmo Genético para resolver o clássico Problema da Mochila. O problema envolve a otimização da seleção de itens para colocar em uma mochila, considerando o peso e o valor de cada item, com o objetivo de maximizar o valor total sem exceder a capacidade da mochila.
@@ -18,11 +17,8 @@ Certifique-se de ter os módulos `Crossover`, `Object`, e `Population` no mesmo 
 
 Ao final da execução, o script imprime a última geração da população, destaca o melhor indivíduo encontrado e apresenta a possível melhor combinação de objetos para a mochila, otimizando o valor total.
 
-## Executando o Código
 
-```bash
-python nome_do_script.py
-
+### English Version:
 
 # Genetic Algorithm for the Knapsack Problem
 
@@ -40,8 +36,5 @@ Make sure to have the `Crossover`, `Object`, and `Population` modules in the sam
 
 At the end of the execution, the script prints the last generation of the population, highlights the best individual found, and presents the possible best combination of objects for the knapsack, optimizing the total value.
 
-## Running the Code
 
-```bash
-python script_name.py
 
