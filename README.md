@@ -1,5 +1,5 @@
 
-### Versão em Português:
+### Português:
 
 # Algoritmo Genético para o Problema da Mochila
 
@@ -18,7 +18,7 @@ Certifique-se de ter os módulos `Crossover`, `Object`, e `Population` no mesmo 
 Ao final da execução, o script imprime a última geração da população, destaca o melhor indivíduo encontrado e apresenta a possível melhor combinação de objetos para a mochila, otimizando o valor total.
 
 
-### English Version:
+### English:
 
 # Genetic Algorithm for the Knapsack Problem
 
